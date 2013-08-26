@@ -1,0 +1,7 @@
+---
+layout: post
+title: "newpost"
+date: 2013-08-27 00:36
+comments: true
+categories: 
+---

@@ -118,9 +118,21 @@
 <ul>
 <li><code>zk01</code> : Zookeeper 클러스터는 단 한개의 ZooKeeper 노드로 구성한다.(서비스환경에서는 최소 3대구성)</li>
 <li><code>storm01</code> : Storm 클러스터의 마스터 노드. Nimbus와 UI 데몬 실행</li>
-<li>&#8220;`storm{02, 03,&hellip;,n} : Storm 클러스터의 슬레이브 노드. 실제 작성한 Storm Application을 실행하는worker 프로세스와 이를 관리하는 Supervisor 데몬 실행.</li>
+<li><code>storm{02, 03,...,n}</code> : Storm 클러스터의 슬레이브 노드. 실제 작성한 Storm Application을 실행하는worker 프로세스와 이를 관리하는 Supervisor 데몬 실행.</li>
 </ul>
 
+
+<p>Storm의 슬레이브 노드는 자신이 구동되는 시점에 ZooKeeper에 자신의 정보를 기록한다. 이렇게 기록된 슬레이브 노드들에 대한 정보는 마스터 노드가 참조하여 현재 가용한 클러스터를 구성한다. 따라서 슬레이브 노드가 1대 이든 수백대이든 전혀 문제가 되지 않는 구조를 가진다. 따라서 우리의 예제는 슬레이브 노드의 수와 무관하게 잘 동작할 것이다. 우리가 해줘야하는 것은 그저 슬레이브 노드를 설치하고 설정하면 된다.이후 동작은 Storm이 자동적으로 알아서 동작한다.</p>
+
+<p>Storm 클러스터 구성에 앞서 간략하게 스톰의 구성요소들에 대해 소개한다.</p>
+
+<h2>Background: Storm 아키텍처</h2>
+
+<p>Storm은 클러스터내에서 2가지 타입의 노드로 구별된다.
+1. <strong>마스터 노드</strong>. worker 노드에 작업을 할당하고 클러스터를 모니터링하고, 클러스터에 애플리케이션을 배포하는 역할을 하는 Nimbus라 불리는 프로세스가 실행되고 있는 노드이다.하둡의 JobTracker와 유사하다.
+2. <strong>워커 노드</strong>. Supervisor 라 불리는 데몬 프로세스가 실행되고 있는 노드이다. Supervisor는 Nimbus로 부터 작업이 할당되면 필요한 만큼 워커 프로세스를 생성하여 시작시키고 작업이 종료되면 워커 프로세스를 종료시키는 기능을 담당한다. 각 워커 프로세스는 Topology의 한 부분을 수행한다. Supervisor는 하둡의 TaskTracker와 유사하다.</p>
+
+<h2>Networking 구성</h2>
 </div>
 
 

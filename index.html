@@ -141,7 +141,8 @@
 
 <h2>Networking 구성</h2>
 
-<p>모든 노드는 DNS에 등록된 호스트명을 통해 노드간 접속을 하게된다. DNS 구성은 추후 다른 섹션을 통해 소개하겠다. 일단은 편의를 위하여 <code>/etc/hosts/</code> 파일에 필요한 노드 정보를 설정한다.</p>
+<p>모든 노드는 DNS에 등록된 호스트명을 통해 노드간 접속을 하게된다. DNS 구성은 추후 다른 섹션을 통해 소개하겠다. 일단은 편의를 위하여 <code>/etc/hosts/</code> 파일에 필요한 노드 정보를 설정한다.
+<figcaption><span>Host 구성 정보</span></figcaption></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -152,7 +153,7 @@
 </span><span class='line'>192.168.56.102    storm02.bigdata.com storm02 <span class="c"># supervisor</span>
 </span><span class='line'>192.168.56.103    storm03.bigdata.com storm03 <span class="c"># supervisor</span>
 </span><span class='line'>192.168.56.104    storm04.bigdata.com storm04 <span class="c"># supervisor</span>
-</span><span class='line'>192.168.56.105    zk01.bigdata.com    zk01
+</span><span class='line'>192.168.56.105    zk01.bigdata.com    zk01 <span class="c"># zookeeper</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

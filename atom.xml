@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-02T16:55:45+09:00</updated>
+  <updated>2013-09-02T17:02:05+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -58,8 +58,8 @@
 <p>Storm은 클러스터내에서 2가지 타입의 노드로 구별된다.</p>
 
 <ol>
-<li><strong>마스터 노드</strong>. worker 노드에 작업을 할당하고 클러스터를 모니터링하고, 클러스터에 애플리케이션을 배포하는 역할을 하는 Nimbus라 불리는 프로세스가 실행되고 있는 노드이다.하둡의 JobTracker와 유사하다.</li>
-<li><strong>워커 노드</strong>. Supervisor 라 불리는 데몬 프로세스가 실행되고 있는 노드이다. Supervisor는 Nimbus로 부터 작업이 할당되면 필요한 만큼 워커 프로세스를 생성하여 시작시키고 작업이 종료되면 워커 프로세스를 종료시키는 기능을 담당한다. 각 워커 프로세스는 Topology의 한 부분을 수행한다. Supervisor는 하둡의 TaskTracker와 유사하다.</li>
+<li><p><strong>마스터 노드</strong> worker 노드에 작업을 할당하고 클러스터를 모니터링하고, 클러스터에 애플리케이션을 배포하는 역할을 하는 Nimbus라 불리는 프로세스가 실행되고 있는 노드이다.하둡의 JobTracker와 유사하다.</p></li>
+<li><p><strong>워커 노드</strong> Supervisor 라 불리는 데몬 프로세스가 실행되고 있는 노드이다. Supervisor는 Nimbus로 부터 작업이 할당되면 필요한 만큼 워커 프로세스를 생성하여 시작시키고 작업이 종료되면 워커 프로세스를 종료시키는 기능을 담당한다. 각 워커 프로세스는 Topology의 한 부분을 수행한다. Supervisor는 하둡의 TaskTracker와 유사하다.</p></li>
 </ol>
 
 

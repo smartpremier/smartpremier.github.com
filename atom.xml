@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-02T14:12:55+09:00</updated>
+  <updated>2013-09-02T16:02:23+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -14,11 +14,40 @@
 
   
   <entry>
-    <title type="html"><![CDATA[newpost]]></title>
+    <title type="html"><![CDATA[멀티노드 스톰 클러스터 구동하기]]></title>
     <link href="http://smartpremier.github.io/blog/2013/08/27/newpost/"/>
     <updated>2013-08-27T00:36:00+09:00</updated>
     <id>http://smartpremier.github.io/blog/2013/08/27/newpost</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>이 예제는 CentOS 6.3 환경에서 Storm을 분산 멀티 클러스터 환경에 어떻게 설치하고 설정하는지 자세히 소개한다. Storm을 실행하기 위해 필요한 ZooKeeper와 Storm의 각 데몬 프로세스를 관리 감독할 Supervisord도 다룬다. Storm 클러스터 구축을 완료하면 정상 동작을 테스트하기 위해 예제 Topology를 실행하는 방법과 그에 따른 일반적인 운영이슈를 FAQ방식으로 정리하며 글을 마무리 할 예정이다.</p>
+
+<h1>다루게 되는 내용들</h1>
+
+<ul>
+<li>Storm 멀티 노드 클러스터를 설치하고 설정하기</li>
+<li>Storm에서 사용할 ZooKeeper클러스터 설치하기(ZooKeeper클러스터는 single-node로 구성)</li>
+<li>Storm 마스터 노드 1대에서 Storm의 Nimbus와 UI 데몬 구동하기</li>
+<li>Storm 슬레이브 노드 3대에서 Supervisor 구동하기</li>
+<li>Supervisord를 사용하여 Storm 마스터 노드와 슬레이브 노드 관리하기</li>
+<li>구축된 Storm 클러스터에 예제 Topology를 실행하기</li>
+</ul>
+
+
+<h1>소프트웨어 버전</h1>
+
+<ul>
+<li>CentOS release 6.3</li>
+<li>Storm 0.8.2 release</li>
+</ul>
+
+
+<h1>Storm 클러스터 구성 개요</h1>
+
+<ul>
+<li><code>zk01</code> : Zookeeper 클러스터는 단 한개의 ZooKeeper 노드로 구성한다.(서비스환경에서는 최소 3대구성)</li>
+<li><code>storm01</code> : Storm 클러스터의 마스터 노드. Nimbus와 UI 데몬 실행</li>
+<li>&#8220;`storm{02, 03,&hellip;,n} : Storm 클러스터의 슬레이브 노드. 실제 작성한 Storm Application을 실행하는worker 프로세스와 이를 관리하는 Supervisor 데몬 실행.</li>
+</ul>
+
 ]]></content>
   </entry>
   

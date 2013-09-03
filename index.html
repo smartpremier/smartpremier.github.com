@@ -264,6 +264,30 @@ JDK6 이상의 버전이 설치되어 있어야 한다.</p>
 <p><strong> ZeroMQ 2.1.7 </strong>
 ZeroMQ는 보편적인 메시징 미들웨어 제품들이 제공해온 다양한 기능을 제공하는 표준 소켓 인터페이스 라이브러리로 Storm 클러스터내에 task 와 task 간 통신을 위해 이를 이용한다.</p>
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install gcc gcc-c++ libuuid_devel
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>아래의 명령들은 ZeroMQ 소스를 빌드하여 <code>/usr/local</code> 아래에 설치하게 된다.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /tmp
+</span><span class='line'>wget http://download.zeromq.org/zeromq-2.1.7.tar.gz
+</span><span class='line'>tar -xzf zeromq-2.1.7.tar.gz
+</span><span class='line'><span class="nb">cd </span>zeromq-2.1.7
+</span><span class='line'>./configure
+</span><span class='line'>make
+</span><span class='line'>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p><strong> JZMQ </strong></p>
 </div>
   

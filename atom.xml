@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-03T22:15:19+09:00</updated>
+  <updated>2013-09-03T22:22:16+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -425,7 +425,7 @@ Unzip은 CentOS 6.3에 기본적으로 설치되어 있다. 설치가 되어 있
 
 
 <p>마스터 노드와 슬레이브 노드 모두를 실행하고 UI로 접속하면 아래 스크린샷을 볼 수 있을 것이다.
-![Storm UI(/images/storm/storm_ui.png)]
+<img src="http://smartpremier.github.io/images/storm/storm_ui.png" alt="Storm UI" />
 화면 1. Storm web UI 스크린 샷</p>
 
 <p>Storm UI의 포트는 <code>conf/storm.yaml</code>에서 자신이 원하는 포트로 변경할 수 있다.</p>

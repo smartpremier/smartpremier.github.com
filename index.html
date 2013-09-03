@@ -111,7 +111,7 @@
 <h1>소프트웨어 버전</h1>
 
 <ul>
-<li>CentOS release 6.3</li>
+<li>CentOS release 6.3 x86_64</li>
 <li>Storm 0.8.2 release</li>
 </ul>
 
@@ -141,7 +141,7 @@
 
 <h2>Networking 구성</h2>
 
-<p>모든 노드는 DNS에 등록된 호스트명을 통해 노드간 접속을 하게된다. DNS 구성은 추후 다른 섹션을 통해 소개하겠다. 일단은 편의를 위하여 <code>/etc/hosts/</code> 파일에 필요한 노드 정보를 설정한다.
+<p>모든 노드는 DNS에 등록된 호스트명을 통해 노드간 접속을 하게된다. DNS 구성은 추후 다른 섹션을 통해 소개하겠다. 일단은 편의를 위하여 <code>/etc/hosts</code> 파일에 필요한 노드 정보를 설정한다.
 <figcaption><span>Host 구성 정보</span></figcaption></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -156,6 +156,71 @@
 </span><span class='line'>192.168.56.105    zk01.bigdata.com    zk01 <span class="c"># zookeeper</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h1>ZooKeeper 설치하기</h1>
+
+<h2>Storm 과 ZooKeeper</h2>
+
+<p>Storm은 클러스터 내의 많은 액터들(Nimbus, Supervisor..)과 연동을 위해 ZooKeeper를 이용한다.</p>
+
+<h2>ZooKeeper 설치하기</h2>
+
+<p>설치는 크게 Cluderad yum repo를 이용하는 방법과 바이너리 Download를 이용하는 방법이 있다.
+편한 방법으로 설치한다. 이후 설정 부분은 동일하게 작업하면 된다.
+1. Cloudera CDH4 YUM Repo를 이용한 설치</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Add Cloudera&#39;s CDH4 Yum Repository</span>
+</span><span class='line'>wget http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm
+</span><span class='line'>sudo yum --nogpgcheck localinstall cloudera-cdh-4-0.x86_64.rpm
+</span><span class='line'>sudo rpm --import http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/RPM-GPG-KEY-cloudera
+</span><span class='line'>wget http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/cloudera-cdh4.repo /etc/yum.repos.d/
+</span><span class='line'>
+</span><span class='line'><span class="c"># check Cloudera CDH4 repository</span>
+</span><span class='line'>sudo yum repolist | grep cloudera-cdh4
+</span><span class='line'>
+</span><span class='line'><span class="c"># install zookeeper</span>
+</span><span class='line'>sudo yum install zookeeper zookeeper-server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Binary Download를 이용한 설치</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">ZK_VERSION</span><span class="o">=</span>3.4.5
+</span><span class='line'>wget http://apache.tt.co.kr/zookeeper/zookeeper-<span class="k">${</span><span class="nv">ZK_VERSION</span><span class="k">}</span>/zookeeper-<span class="k">${</span><span class="nv">ZK_VERSION</span><span class="k">}</span>.tar.gz
+</span><span class='line'>tar xvfz zookeeper-<span class="k">${</span><span class="nv">ZK_VERSION</span><span class="k">}</span>.tar.gz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>설치 완료 후 설정하기</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">ZOOKEEPER_HOME</span><span class="k">}</span>
+</span><span class='line'>cp conf/zoo_sample.cfg conf/zoo.cfg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8220;`</p>
 </div>
   
   

@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-03T18:42:12+09:00</updated>
+  <updated>2013-09-03T18:45:29+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -396,40 +396,104 @@ Unzip은 CentOS 6.3에 기본적으로 설치되어 있다. 설치가 되어 있
 
 <p>Storm UI는 기본 포트 번호는 <code>8080(tcp)</code>이다. 따라서 아래 URL로 접속하면 된다.</p>
 
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>** Supervisor 데몬 실행하기 **
-</span><span class='line'>슬레이브 노드<span class="sb">```</span>storm0<span class="o">{</span>n<span class="o">}</span><span class="sb">```</span>에서 다음 명령을 통해 Supervisor 데몬을 실행한다.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>http://storm01:8080/
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>cd ${STORM_HOME}
-bin/storm supervisor</p>
+<p></p>
 
-<p>jps
-21586 supervisor</p>
+<p><strong> Supervisor 데몬 실행하기 </strong>
+슬레이브 노드<code>storm0{n}</code>에서 다음 명령을 통해 Supervisor 데몬을 실행한다.</p>
 
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>마스터 노드와 슬레이브 노드 모두를 실행하고 UI로 접속하면 아래 스크린샷을 볼 수 있을 것이다.
-</span><span class='line'>!<span class="o">[</span>Storm UI<span class="o">](</span>/images/storm/storm_ui.png<span class="o">)]</span>
-</span><span class='line'>화면 1. Storm web UI 스크린 샷
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>
+</span><span class='line'>bin/storm supervisor
 </span><span class='line'>
-</span><span class='line'>Storm UI의 포트는 <span class="sb">```</span>conf/storm.yaml<span class="sb">```</span>에서 자신이 원하는 포트로 변경할 수 있다.
+</span><span class='line'>jps
+</span><span class='line'>21586 supervisor
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> bash</p>
+<p>마스터 노드와 슬레이브 노드 모두를 실행하고 UI로 접속하면 아래 스크린샷을 볼 수 있을 것이다.
+<img src="http://smartpremier.github.io/images/storm/storm_ui.png" alt="Storm UI" />]
+화면 1. Storm web UI 스크린 샷</p>
 
-<h1>only master node</h1>
+<p>Storm UI의 포트는 <code>conf/storm.yaml</code>에서 자신이 원하는 포트로 변경할 수 있다.</p>
 
-<p>ui.port: 8080
-ui.childopts: &ldquo;-Xmx768m&rdquo;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># only master node</span>
+</span><span class='line'>ui.port: 8080
+</span><span class='line'>ui.childopts: <span class="s2">&quot;-Xmx768m&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+
+<p>아무런 에러 메시지 없이 여기까지 왔다면 화면이 잘 보일것이고, 이것은 곧 모든 설치와 설정이 정상임을 의미한다. 실행중인 Storm 데몬들을 중지하기 위해서는 아래 방식들로 종료가 가능하다.
+ &ndash; 데몬을 실행한 터미널에서 <code>Ctrl-C</code> 입력 또는
+ &ndash; <code>kill -9 &lt;pid&gt;</code></p>
+
+<h2>Strom 로그 파일</h2>
+
+<p>기본적으로 Storm 데몬이 로그를 기록하는 경로는:
+ &ndash; Nimbus: <code>${STORM_HOME}/logs/nimbus.log</code>
+ &ndash; Supervisor: <code>${STORM_HOME}/logs/supervisor.log</code>
+ &ndash; web UI: <code>${STORM_HOME}/logs/ui.log</code></p>
+
+<p>해당 로그 경로에 대한 정보는 <code>${STORM_HOME}/bin/storm</code> 파일내에 <code>-Dlogfile.name=..</code> 부분에 설정되어 있다.</p>
+
+<p>로그 파일은 문제가 발생했을 경우 이를 해결할 수 있는 대부분의 정보를 담고 있기에 유용하게 활용할 수 있도록 한다.</p>
+
+<h1>프로세스 관리 도구를 사용하여 Storm 실행하기</h1>
+
+<p>이 섹션은 적용을 해도 그만 안해도 그만인데 하면 조금 있어보이면서 운영/관리 측면에서 장점을 얻을 수 있 내용이다. 하지만 어디까지 자신의 마음이다.
+위에서 Storm의 각 데몬을 실행시키기 위해서는 <code>${STORM_HOME}/bin/storm ...</code>명령을 사용했다. 이렇게 해도 전혀 문제는 없지만 문제는 예상치 못하게 특정 데몬이 종료되는 경우 이를 대비하기 위한 방안이 전혀 고려되지 않았다. 이러한 취약점을 보완하기 위해 데몬 프로세스를 감시/관리하는 <strong>supervisord</strong>라는 도구를 적용해 본다.
+사실 Storm의 supervisor와 이제 다룰 supervisord는 전혀 무관한데 이름은 대단히 유사하다. 혼동하지 말도록 하자.</p>
+
+<h2>supervisor 설치하기</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># install rhel epel repository</span>
+</span><span class='line'><span class="nb">cd</span> /tmp
+</span><span class='line'>wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+</span><span class='line'>sudo rpm -Uhv epel-release-6-8.noarch.rpm
+</span><span class='line'>
+</span><span class='line'><span class="c"># install supervisord via yum repo</span>
+</span><span class='line'>sudo yum install supervisor
+</span><span class='line'>sudo chkconfig supervisord on
+</span><span class='line'>sudo chmod 600 /etc/supervisord.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>주의: 위의 EPEL을 이용해서 ZeroMQ는 설치하면 안된다. Storm은 ZeroMQ-2.1.7버전이여야 하는데 EPEL은 ZeroMQ-2.2.0이 패키징되어 있다.</p>
+
+<h2>Storm을 위한 로그 디렉토리 생성</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo mkdir -p /var/log/storm
+</span><span class='line'>sudo chown -R <span class="k">${</span><span class="nv">STORM</span><span class="p">.USER</span><span class="k">}</span> /var/log/storm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>마스터 노드: Nimbus 와 UI 데몬 관리 설정</h2>
+
+<p>마스터 노드인 <code>storm01</code>노드의 <code>/etc/supervisord.conf</code>파일에 다음 내용을 추가한다.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -454,145 +518,87 @@ ui.childopts: &ldquo;-Xmx768m&rdquo;</p>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>아무런 에러 메시지 없이 여기까지 왔다면 화면이 잘 보일것이고, 이것은 곧 모든 설치와 설정이 정상임을 의미한다. 실행중인 Storm 데몬들을 중지하기 위해서는 아래 방식들로 종료가 가능하다.
-</span><span class='line'> - 데몬을 실행한 터미널에서 <span class="sb">```</span>Ctrl-C<span class="sb">```</span> 입력 또는
-</span><span class='line'> - <span class="sb">```</span><span class="nb">kill</span> -9 &lt;pid&gt;<span class="sb">```</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>program:storm-nimbus<span class="o">]</span>
+</span><span class='line'><span class="nb">command</span><span class="o">=</span>/opt/storm/storm-0.8.2/bin/storm nimbus
+</span><span class='line'><span class="nv">user</span><span class="o">=</span><span class="k">${</span><span class="nv">STORM</span><span class="p">.USER</span><span class="k">}</span>
+</span><span class='line'><span class="nv">autostart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">autorestart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">startsecs</span><span class="o">=</span>10
+</span><span class='line'><span class="nv">startretries</span><span class="o">=</span>999
+</span><span class='line'><span class="nv">log_stdout</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">log_stderr</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">logfile</span><span class="o">=</span>/var/log/storm/nimbus.out
+</span><span class='line'><span class="nv">logfile_maxbytes</span><span class="o">=</span>20MB
+</span><span class='line'><span class="nv">logfile_backups</span><span class="o">=</span>10
 </span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>Strom 로그 파일
-</span><span class='line'>--------------
-</span><span class='line'>기본적으로 Storm 데몬이 로그를 기록하는 경로는:
-</span><span class='line'> - Nimbus: <span class="sb">```</span><span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>/logs/nimbus.log<span class="sb">```</span>
-</span><span class='line'> - Supervisor: <span class="sb">```</span><span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>/logs/supervisor.log<span class="sb">```</span>
-</span><span class='line'> - web UI: <span class="sb">```</span><span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>/logs/ui.log<span class="sb">```</span>
-</span><span class='line'>
-</span><span class='line'>해당 로그 경로에 대한 정보는 <span class="sb">```</span><span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>/bin/storm<span class="sb">```</span> 파일내에 <span class="sb">```</span>-Dlogfile.name<span class="o">=</span>..<span class="sb">```</span> 부분에 설정되어 있다.
-</span><span class='line'>
-</span><span class='line'>로그 파일은 문제가 발생했을 경우 이를 해결할 수 있는 대부분의 정보를 담고 있기에 유용하게 활용할 수 있도록 한다.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>프로세스 관리 도구를 사용하여 Storm 실행하기
-</span><span class='line'><span class="o">===========================================</span>
-</span><span class='line'>이 섹션은 적용을 해도 그만 안해도 그만인데 하면 조금 있어보이면서 운영/관리 측면에서 장점을 얻을 수 있 내용이다. 하지만 어디까지 자신의 마음이다.
-</span><span class='line'>위에서 Storm의 각 데몬을 실행시키기 위해서는 <span class="sb">```</span><span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>/bin/storm ...<span class="sb">```</span>명령을 사용했다. 이렇게 해도 전혀 문제는 없지만 문제는 예상치 못하게 특정 데몬이 종료되는 경우 이를 대비하기 위한 방안이 전혀 고려되지 않았다. 이러한 취약점을 보완하기 위해 데몬 프로세스를 감시/관리하는 **supervisord**라는 도구를 적용해 본다.
-</span><span class='line'>사실 Storm의 supervisor와 이제 다룰 supervisord는 전혀 무관한데 이름은 대단히 유사하다. 혼동하지 말도록 하자.
-</span><span class='line'>
-</span><span class='line'>supervisor 설치하기
-</span><span class='line'>------------------
+</span><span class='line'><span class="o">[</span>program:storm-ui<span class="o">]</span>
+</span><span class='line'><span class="nb">command</span><span class="o">=</span>/opt/storm/storm-0.8.2/bin/storm ui
+</span><span class='line'><span class="nv">user</span><span class="o">=</span><span class="k">${</span><span class="nv">STORM</span><span class="p">.USER</span><span class="k">}</span>
+</span><span class='line'><span class="nv">autostart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">autorestart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">startsecs</span><span class="o">=</span>10
+</span><span class='line'><span class="nv">startretries</span><span class="o">=</span>999
+</span><span class='line'><span class="nv">log_stdout</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">log_stderr</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">logfile</span><span class="o">=</span>/var/log/storm/ui.out
+</span><span class='line'><span class="nv">logfile_maxbytes</span><span class="o">=</span>20MB
+</span><span class='line'><span class="nv">logfile_backups</span><span class="o">=</span>10
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> bash</p>
+<h2>슬레이브 노드: Supervisor 데몬 관리 설정</h2>
 
-<h1>install rhel epel repository</h1>
+<p>슬레이브 노드인 <code>storm0{2..n}</code>노드의 <code>/etc/supervisord.conf</code>파일에 다음 내용을 추가한다.</p>
 
-<p>cd /tmp
-wget <a href="http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm">http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm</a>
-sudo rpm -Uhv epel-release-6-8.noarch.rpm</p>
-
-<h1>install supervisord via yum repo</h1>
-
-<p>sudo yum install supervisor
-sudo chkconfig supervisord on
-sudo chmod 600 /etc/supervisord.conf</p>
-
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>주의: 위의 EPEL을 이용해서 ZeroMQ는 설치하면 안된다. Storm은 ZeroMQ-2.1.7버전이여야 하는데 EPEL은 ZeroMQ-2.2.0이 패키징되어 있다.
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>program:storm-supervisor<span class="o">]</span>
+</span><span class='line'><span class="nb">command</span><span class="o">=</span>/opt/storm/storm-0.8.2/bin/storm supervisor
+</span><span class='line'><span class="nv">user</span><span class="o">=</span>storm
+</span><span class='line'><span class="nv">autostart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">autorestart</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">startsecs</span><span class="o">=</span>10
+</span><span class='line'><span class="nv">startretries</span><span class="o">=</span>999
+</span><span class='line'><span class="nv">log_stdout</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">log_stderr</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="nv">logfile</span><span class="o">=</span>/var/log/storm/supervisor.out
+</span><span class='line'><span class="nv">logfile_maxbytes</span><span class="o">=</span>20MB
+</span><span class='line'><span class="nv">logfile_backups</span><span class="o">=</span>10
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>supervisord로 Storm 데몬 실행하기</h2>
+
+<p>supervisord로 데몬을 실행하기 전에 이전에 테스트로 스톰을 실행한 상태라면 모두 종료시킨 후에 아래 명령을 실행한다.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># start storm daemon via supervisord</span>
+</span><span class='line'>sudo service supervisord start
 </span><span class='line'>
-</span><span class='line'>Storm을 위한 로그 디렉토리 생성
-</span><span class='line'>-------------------------------
+</span><span class='line'><span class="c"># check status</span>
+</span><span class='line'>sudo service supervisorctl status
+</span><span class='line'>
+</span><span class='line'><span class="c"># stop storm daemon via supervisord</span>
+</span><span class='line'>sudo service supervisord stop
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p> bash
-sudo mkdir -p /var/log/storm
-sudo chown -R ${STORM.USER} /var/log/storm</p>
-
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>마스터 노드: Nimbus 와 UI 데몬 관리 설정
-</span><span class='line'>----------------------------------------
-</span><span class='line'>마스터 노드인 <span class="sb">```</span>storm01<span class="sb">```</span>노드의 <span class="sb">```</span>/etc/supervisord.conf<span class="sb">```</span>파일에 다음 내용을 추가한다.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>[program:storm-nimbus]
-command=/opt/storm/storm-0.8.2/bin/storm nimbus
-user=${STORM.USER}
-autostart=true
-autorestart=true
-startsecs=10
-startretries=999
-log_stdout=true
-log_stderr=true
-logfile=/var/log/storm/nimbus.out
-logfile_maxbytes=20MB
-logfile_backups=10</p>
-
-<p>[program:storm-ui]
-command=/opt/storm/storm-0.8.2/bin/storm ui
-user=${STORM.USER}
-autostart=true
-autorestart=true
-startsecs=10
-startretries=999
-log_stdout=true
-log_stderr=true
-logfile=/var/log/storm/ui.out
-logfile_maxbytes=20MB
-logfile_backups=10</p>
-
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>슬레이브 노드: Supervisor 데몬 관리 설정
-</span><span class='line'>---------------------------------------
-</span><span class='line'>슬레이브 노드인 <span class="sb">```</span>storm0<span class="o">{</span>2..n<span class="o">}</span><span class="sb">```</span>노드의 <span class="sb">```</span>/etc/supervisord.conf<span class="sb">```</span>파일에 다음 내용을 추가한다.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>[program:storm-supervisor]
-command=/opt/storm/storm-0.8.2/bin/storm supervisor
-user=storm
-autostart=true
-autorestart=true
-startsecs=10
-startretries=999
-log_stdout=true
-log_stderr=true
-logfile=/var/log/storm/supervisor.out
-logfile_maxbytes=20MB
-logfile_backups=10</p>
-
-<figure class='code'><figcaption><span>http://storm01:8080/&#8220;` </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>supervisord로 Storm 데몬 실행하기
-</span><span class='line'>---------------------------------
-</span><span class='line'>supervisord로 데몬을 실행하기 전에 이전에 테스트로 스톰을 실행한 상태라면 모두 종료시킨 후에 아래 명령을 실행한다.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> bash</p>
-
-<h1>start storm daemon via supervisord</h1>
-
-<p>sudo service supervisord start</p>
-
-<h1>check status</h1>
-
-<p>sudo service supervisorctl status</p>
-
-<h1>stop storm daemon via supervisord</h1>
-
-<p>sudo service supervisord stop
-&#8220;`</p>
 ]]></content>
   </entry>
   

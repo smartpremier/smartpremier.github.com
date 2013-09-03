@@ -448,7 +448,43 @@ Unzip은 CentOS 6.3에 기본적으로 설치되어 있다. 설치가 되어 있
 
 <p>이제까지 설치하고 설정한 Storm cluster가 잘 동작하는지 직접 테스트를 해보자. 이를 통해 Storm 설정이 올바르게 적용되었는지 확인해 볼 수 있다.</p>
 
-<p><strong> Nimbus 데몬 실행하기 </strong></p>
+<p><strong> Nimbus 데몬 실행하기 </strong>
+마스터 노드<code>storm01</code>에서 다음 명령을 통해 Nimbus 데몬을 실행한다.</p>
+
+<figure class='code'><figcaption><span>${STORM_HOME}/conf/storm.yaml &#8220;` 파일을 열어 아래 내용을 참조하여 자신의 환경에 맞는 적절한 값으로 설정한다. 아래 내용은 마스터와 슬레이브 모든 노드에 동일하게 적용해야 한다.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>
+</span><span class='line'>bin/storm nimbus
+</span><span class='line'>bin/storm ui
+</span><span class='line'>
+</span><span class='line'>jps
+</span><span class='line'>15438 nimbus
+</span><span class='line'>15459 core  <span class="c"># storm ui process</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong> Supervisor 데몬 실행하기 </strong>
+슬레이브 노드<code>storm0{n}</code>에서 다음 명령을 통해 Supervisor 데몬을 실행한다.</p>
+
+<figure class='code'><figcaption><span>${STORM_HOME}/conf/storm.yaml &#8220;` 파일을 열어 아래 내용을 참조하여 자신의 환경에 맞는 적절한 값으로 설정한다. 아래 내용은 마스터와 슬레이브 모든 노드에 동일하게 적용해야 한다.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">STORM_HOME</span><span class="k">}</span>
+</span><span class='line'>bin/storm supervisor
+</span><span class='line'>
+</span><span class='line'>jps
+</span><span class='line'>21586 supervisor
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 </div>
   
   

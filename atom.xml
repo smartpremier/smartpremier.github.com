@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-03T22:22:16+09:00</updated>
+  <updated>2013-09-03T22:26:33+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -668,7 +668,7 @@ lein을 통한 빌드가 제대로 이루어졌다면 <code>target/storm-starter
 
 <h2>Refernece</h2>
 
-<p>이 블로그는 <a href="http://www.michael-noll.com/tutorials/running-multi-node-storm-cluster/">michael-noll</a>의 기사와 그간의</p>
+<p>이 블로그는 michael-noll의 <a href="http://www.michael-noll.com/tutorials/running-multi-node-storm-cluster/">Running a Multi-Node Storm Cluster</a>의 목차와 내용을 참조하였습니다.</p>
 ]]></content>
   </entry>
   

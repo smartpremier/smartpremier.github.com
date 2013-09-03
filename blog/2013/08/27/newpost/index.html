@@ -163,8 +163,12 @@
 <h2>ZooKeeper 설치하기</h2>
 
 <p>설치는 크게 Cluderad yum repo를 이용하는 방법과 바이너리 Download를 이용하는 방법이 있다.
-편한 방법으로 설치한다. 이후 설정 부분은 동일하게 작업하면 된다.
-1. Cloudera CDH4 YUM Repo를 이용한 설치</p>
+편한 방법으로 설치한다. 이후 설정 부분은 동일하게 작업하면 된다.</p>
+
+<ol>
+<li>Cloudera CDH4 YUM Repo를 이용한 설치</li>
+</ol>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -214,6 +218,26 @@
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">ZOOKEEPER_HOME</span><span class="k">}</span>
 </span><span class='line'>cp conf/zoo_sample.cfg conf/zoo.cfg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>설정은 꼭 필요한 내용들만 다룬다. 기본 설정을 유지하되 아래의 내용을 <code>zoo.cfg</code>파일에 맨 마지막에 추가한다.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Enable regular purging of old data and transaction logs every 24 hours</span>
+</span><span class='line'>autopurge.purgeInterval<span class="o">=</span>24
+</span><span class='line'>autopurge.snapRetainCount<span class="o">=</span>5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ZooKeeper 실행하기</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">ZOOKEEPER_HOME</span><span class="k">}</span>
+</span><span class='line'>bin/zkServer.sh start
 </span></code></pre></td></tr></table></div></figure>
 
 

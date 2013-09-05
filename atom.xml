@@ -4,7 +4,7 @@
   <title><![CDATA[smartpremier의 큰개소리]]></title>
   <link href="http://smartpremier.github.io/atom.xml" rel="self"/>
   <link href="http://smartpremier.github.io/"/>
-  <updated>2013-09-05T16:17:14+09:00</updated>
+  <updated>2013-09-05T16:33:58+09:00</updated>
   <id>http://smartpremier.github.io/</id>
   <author>
     <name><![CDATA[smartpremier]]></name>
@@ -607,7 +607,7 @@ Unzip은 CentOS 6.3에 기본적으로 설치되어 있다. 설치가 되어 있
 </span><span class='line'>sudo service supervisord start
 </span><span class='line'>
 </span><span class='line'><span class="c"># check status</span>
-</span><span class='line'>sudo service supervisorctl status
+</span><span class='line'>sudo supervisorctl status
 </span><span class='line'>
 </span><span class='line'><span class="c"># stop storm daemon via supervisord</span>
 </span><span class='line'>sudo service supervisord stop

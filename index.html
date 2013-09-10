@@ -9,8 +9,7 @@
   <meta name="author" content="smartpremier">
 
   
-  <meta name="description" content="이 예제는 Hadoop에 관심은 있으나 환경설정 및 기초지식등 진입 장벽을 느끼는 이들에게 조금이나마 도움이 되기 위하여 Hadoop을 실행하고 테스트 해 볼 수 있는 멀터 노드 클러스터를 어떻게 구성하는지 소개한다.
-">
+  <meta name="description" content="이 예제는 Hadoop에 관심은 있으나 환경설정 및 기초지식 등 진입 장벽을 느끼는 이들에게 조금이나마 도움이 되기 위하여 Hadoop을 실행하고 테스트 해 볼 수 있는 멀터 노드 클러스터를 어떻게 구성하는지 소개한다. 다루게 되는 내용들 Hadoop 멀티 노드 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -98,7 +97,281 @@
   </header>
 
 
-  <div class="entry-content"><p>이 예제는 Hadoop에 관심은 있으나 환경설정 및 기초지식등 진입 장벽을 느끼는 이들에게 조금이나마 도움이 되기 위하여 Hadoop을 실행하고 테스트 해 볼 수 있는 멀터 노드 클러스터를 어떻게 구성하는지 소개한다.</p>
+  <div class="entry-content"><p>이 예제는 Hadoop에 관심은 있으나 환경설정 및 기초지식 등 진입 장벽을 느끼는 이들에게 조금이나마 도움이 되기 위하여 Hadoop을 실행하고 테스트 해 볼 수 있는 멀터 노드 클러스터를 어떻게 구성하는지 소개한다.</p>
+
+<h1>다루게 되는 내용들</h1>
+
+<ul>
+<li>Hadoop 멀티 노드 클러스터를 설치하고 설정하기</li>
+<li>구축된 Hadoop 클러스터에 예제 M/R 실행하기</li>
+</ul>
+
+
+<h1>소프트웨어 버전</h1>
+
+<ul>
+<li><strong>CentOS release 6.4 x86_64</strong></li>
+<li><strong>Hadoop 1.0.4 release</strong></li>
+<li>JDK 6+</li>
+</ul>
+
+
+<h1>환경설정</h1>
+
+<ul>
+<li>master node에서 slave nodes로 ssh 자동로그인 설정 필요</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c"># master node 에서 ssh key 생성</span>
+</span><span class='line'> ssh-keygen -t rsa
+</span><span class='line'>
+</span><span class='line'> <span class="c"># ssh key</span>
+</span><span class='line'>  <span class="k">for </span>server in <span class="nv">$HOSTNAME</span> <span class="k">${</span><span class="nv">SLAVE_SERVERS</span><span class="p">//,/ </span><span class="k">}</span>; <span class="k">do </span>scp ~/.ssh/id_rsa.pub <span class="se">\$</span>server:~/ <span class="o">&amp;&amp;</span> ssh <span class="se">\$</span>server <span class="s2">&quot;if [ ! -e ~/.ssh ]; then mkdir -p ~/.ssh; fi; cat id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; chmod -R 700 ~/.ssh&quot;</span>; <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>$HADOOP_HOME/conf/core-site.xml에 fs.default.name 설정</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--- core-site.xml.org    2013-05-23 23:53:44.743495472 +0900
+</span><span class='line'>+++ core-site.xml 2013-05-23 23:59:15.108426820 +0900
+</span><span class='line'>@@ -4,5 +4,8 @@
+</span><span class='line'> &lt;!-- Put site-specific property overrides in this file. --&gt;
+</span><span class='line'>
+</span><span class='line'> &lt;configuration&gt;
+</span><span class='line'>-
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;fs.default.name&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;hdfs://<span class="k">${</span><span class="nv">HOSTNAME</span><span class="k">}</span>:9000&lt;/value&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'> &lt;/configuration&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>$HADOOP_HOME/conf/hadoop-env.sh에 JAVA_HOME 설정</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--- hadoop-env.sh.org    2013-05-23 23:54:03.454575784 +0900
+</span><span class='line'>+++ hadoop-env.sh 2013-06-27 22:33:06.340893588 +0900
+</span><span class='line'>@@ -6,7 +6,7 @@
+</span><span class='line'> <span class="c"># remote nodes.</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c"># The java implementation to use.  Required.</span>
+</span><span class='line'>-# <span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/lib/j2sdk1.5-sun
+</span><span class='line'>+export <span class="nv">JAVA_HOME</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c"># Extra Java CLASSPATH elements.  Optional.</span>
+</span><span class='line'> <span class="c"># export HADOOP_CLASSPATH=</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>$HADOOP_HOME/conf/hdfs-site.xml에 기본적인 property 설정</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--- hdfs-site.xml.org    2013-05-24 00:01:54.330678973 +0900
+</span><span class='line'>+++ hdfs-site.xml 2013-05-24 00:10:16.502541079 +0900
+</span><span class='line'>@@ -4,5 +4,15 @@
+</span><span class='line'> &lt;!-- Put site-specific property overrides in this file. --&gt;
+</span><span class='line'>
+</span><span class='line'> &lt;configuration&gt;
+</span><span class='line'>-
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;dfs.replication&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;3&lt;/value&gt;
+</span><span class='line'>+     &lt;description&gt;The actual number of replications can be specified when the file is created.
+</span><span class='line'>+     &lt;/description&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;dfs.block.size&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;134217728&lt;/value&gt;
+</span><span class='line'>+     &lt;final&gt;true&lt;/final&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'> &lt;/configuration
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>$HADOOP_HOME/conf/mapred-site.xml에 기본적인 property 설정</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--- mapred-site.xml.org  2013-05-24 00:13:14.547420991 +0900
+</span><span class='line'>+++ mapred-site.xml   2013-05-24 23:50:11.022801847 +0900
+</span><span class='line'>@@ -4,5 +4,18 @@
+</span><span class='line'> &lt;!-- Put site-specific property overrides in this file. --&gt;
+</span><span class='line'>
+</span><span class='line'> &lt;configuration&gt;
+</span><span class='line'>-
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;mapred.job.tracker&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;<span class="k">${</span><span class="nv">HOSTNAME</span><span class="k">}</span>:9001&lt;/value&gt;
+</span><span class='line'>+     &lt;description&gt;The host and port that the MapReduce job tracker runs at.  &lt;/description&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;mapred.task.timeout&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;30000&lt;/value&gt;
+</span><span class='line'>+     &lt;final&gt;true&lt;/final&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'>+ &lt;property&gt;
+</span><span class='line'>+     &lt;name&gt;mapred.child.java.opts&lt;/name&gt;
+</span><span class='line'>+     &lt;value&gt;-Xmx400m&lt;/value&gt;
+</span><span class='line'>+ &lt;/property&gt;
+</span><span class='line'> &lt;/configuration&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>$HADOOP_HOME/masters에 masters 변경</li>
+<li>$HADOOP_HOME/slaves에 slaves 변경</li>
+<li>/etc/sysconfig/iptables에 hadoop port 추가</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># hadoop</span>
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 9000 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 9001 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50010 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50020 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50030 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50060 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50070 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50075 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50090 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50105 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50470 -j ACCEPT
+</span><span class='line'>-A INPUT -m state --state NEW -m tcp -p tcp --dport 50475 -j ACCEPT
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>/etc/security/limits.conf 변경 (없으면 생성)</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/security
+</span><span class='line'><span class="nv">$&gt;</span> diff limits.conf limits.conf.org
+</span><span class='line'>50,53d49
+</span><span class='line'>&lt; * - nofile 32768
+</span><span class='line'>&lt; * soft nproc 32000
+</span><span class='line'>&lt; * hard nproc 32000
+</span><span class='line'>&lt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>/etc/pam.d/common-session 변경 (없으면 생성)</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$&gt;</span> cat /etc/pam.d/common-session
+</span><span class='line'>session required  pam_limits.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>설치하기</h1>
+
+<ul>
+<li><a href="/files/hadoop_install.sh">설치 스크립트</a></li>
+</ul>
+
 </div>
   
   
